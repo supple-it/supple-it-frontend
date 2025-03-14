@@ -24,6 +24,7 @@ function App() {
         <Route path="/favorites" element={<FavoriteList />} />
         <Route path="/notices" element={<NoticeBoard />} />
         <Route path="/schedule" element={<Schedule />} />
+        <Route path="/product" element={<ProductList />} />
       </Routes>
     </Router>
   );
