@@ -1,32 +1,43 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import MyPage from "./pages/MyPage";
-import ProductList from "./pages/ProductList";
-import ProductDetail from "./pages/ProductDetail";
-import ReviewForm from "./pages/ReviewForm";
-import FavoriteList from "./pages/FavoriteList";
-import NoticeBoard from "./pages/NoticeBoard";
-import Schedule from "./pages/schedule";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import Navbar from './components/include/Navbar';
+import Footer from './components/include/Footer';
+import Home from './pages/Home';
+import MyPage from './pages/MyPage';
+import Login from './pages/Login';
 
-function App() {
+const AppContent = () => {
+  const location = useLocation(); // 현재 URL 경로를 얻음
+
+  // 로그인 페이지나 마이페이지에서는 Navbar와 Footer를 제외
+  const isSpecialPage = location.pathname === '/login' || location.pathname === '/mypage';
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/products" element={<ProductList />} />
-        <Route path="/products/:id" element={<ProductDetail />} />
-        <Route path="/review" element={<ReviewForm />} />
-        <Route path="/favorites" element={<FavoriteList />} />
-        <Route path="/notices" element={<NoticeBoard />} />
-        <Route path="/schedule" element={<Schedule />} />
-      </Routes>
+    <div className="min-h-screen flex flex-col bg-gray-900 text-gray-100 font-[Noto_Sans_KR]">
+      {/* 로그인 페이지나 마이페이지가 아니면 Navbar 렌더링 */}
+      {!isSpecialPage && <Navbar />}
+
+      {/* 라우팅 설정 */}
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </main>
+
+      {/* 로그인 페이지나 마이페이지가 아니면 Footer 렌더링 */}
+      {!isSpecialPage && <Footer />}
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <Router> {/* <Router>로 감싸기 */}
+      <AppContent />
     </Router>
   );
-}
+};
 
 export default App;

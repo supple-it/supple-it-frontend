@@ -1,34 +1,94 @@
-import { useState } from "react";
-import { login } from "../services/api";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import './login.css';  // CSS 파일을 import
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await login(email, password);
-      localStorage.setItem("token", response.data.token);
-      alert("로그인 성공!");
-      navigate("/products"); // 로그인 후 제품 리스트 페이지로 이동
-    } catch (error) {
-      alert("로그인 실패: " + error.response.data.message);
+  const handleLogin = () => {
+    if (!username || !password) {
+      setIsPopupVisible(true);
+    } else {
+      setIsPopupVisible(false);
+      console.log('로그인 시도:', username, password);
     }
   };
+  
 
   return (
-    <div>
-      <h2>로그인</h2>
-      <form onSubmit={handleLogin}>
-        <input type="email" placeholder="이메일" onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="비밀번호" onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit">로그인</button>
-      </form>
+    <div className="login-container"
+  style={{
+    backgroundImage: "url('/images/back.jpg')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+      <div className="login-box">
+        <h2>로그인</h2>
+
+        <div className="input-group">
+          <label htmlFor="username">아이디</label>
+          <input
+            type="text"
+            id="username"
+            placeholder="아이디를 입력하세요"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="비밀번호를 입력하세요"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        <button className="login-button" onClick={handleLogin}>로그인</button>
+
+        <div className="signup-link">
+          <p>계정이 없으신가요? <a href="#">회원가입</a></p>
+        </div>
+
+        {/* 구글, 카카오, 네이버 로그인 PNG 버튼 */}
+        <div className="social-login" style={{border: 'none' }}>
+          <button className="social-button google">
+            <a href="https://accounts.google.com/ServiceLogin" target="_blank" rel="noopener noreferrer">
+              <img src="/images/Google.png" alt="구글 로그인" className="social-icon" />
+            </a>
+          </button>
+          <button className="social-button kakao">
+            <a href="https://accounts.kakao.com/login/?continue=https%3A%2F%2Faccounts.kakao.com%2Fweblogin%2Faccount#login" target="_blank" rel="noopener noreferrer">
+              <img src="/images/kakao.png" alt="카카오 로그인" className="social-icon" />
+            </a>
+          </button>
+          <button className="social-button naver">  {/* 네이버 버튼에 개별 클래스 추가 */}
+    <a href="https://nid.naver.com/nidlogin.login" target="_blank" rel="noopener noreferrer">
+      <img src="/images/Naver.png" alt="네이버 로그인" className="social-icon" />
+    </a>
+  </button>
+</div>
+
+        {/* 팝업 모달 */}
+        {isPopupVisible && (
+          <div className="popup-overlay">
+            <div className="popup-message">
+              <p>아이디와 비밀번호를 입력해주세요.</p>
+              <button onClick={() => setIsPopupVisible(false)} className="popup-close-button">
+                닫기
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
-}
+};
 
 export default Login;
