@@ -39,7 +39,7 @@ const Header = ({isTokenExpired}) => {
             <Link to="/" className="nav-link">Home</Link>
             <Link to="/login" className='nav-link'>로그인</Link>
             <Link to="/schedule" className='nav-link'>스케쥴</Link>
-            <Link to="/notice" className='nav-link'>공지사항</Link>
+            <Link to="/notices" className='nav-link'>공지사항</Link>
           </Nav>
           {isLoggedIn && (
             <button type='button' onClick={handleLogout}>로그아웃</button>
