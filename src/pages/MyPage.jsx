@@ -1,168 +1,113 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Link 컴포넌트 import
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 const MyPage = () => {
+  const [date, setDate] = useState(new Date());
+
+  // 주간 날짜 구하기
+  const getWeekDates = (currentDate) => {
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1); // 월요일 기준
+
+    return Array.from({ length: 7 }, (_, i) => {
+      const newDate = new Date(startOfWeek);
+      newDate.setDate(startOfWeek.getDate() + i);
+      return newDate;
+    });
+  };
+
+  const weekDates = getWeekDates(date);
+
+  // 예시 복용 계획 (실제 데이터는 서버에서 가져오도록 변경 가능)
+  const weeklyPlan = {
+    Monday: ['비타민 C', '오메가-3'],
+    Tuesday: ['칼슘', '비타민 D'],
+    Wednesday: ['마그네슘'],
+    Thursday: ['유산균'],
+    Friday: ['아연', '철분'],
+    Saturday: ['종합비타민'],
+    Sunday: ['오메가-3'],
+  };
+
+  // 오늘의 복용 계획 (예시)
+  const todayPlan = ['비타민 C', '오메가-3']; // 이 부분을 실제 날짜에 맞춰 동적으로 처리할 수 있습니다.
+
   return (
     <div className="bg-gray-50 font-['Noto_Sans_KR']">
       {/* 네비게이션 바 */}
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                {/* 로고 클릭 시 홈 화면으로 이동 */}
-                <Link to="/">
-                  <img className="h-8 w-auto" src="https://ai-public.creatie.ai/gen_page/logo_placeholder.png" alt="로고" />
-                </Link>
-              </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <a href="#" className="border-teal-600 text-teal-600 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">대시보드</a>
-                <a href="#" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">영양제 검색</a>
-                <a href="#" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">건강정보</a>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <button type="button" className="p-2 rounded-full text-gray-400 hover:text-gray-500 relative">
-                <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">3</span>
-                <i className="fas fa-bell text-xl"></i>
-              </button>
-              <div className="ml-4 flex items-center">
-                <img className="h-8 w-8 rounded-full" src="https://creatie.ai/ai/api/search-image?query=A professional headshot of a young Asian person with a friendly smile, wearing casual business attire, against a clean white background&width=200&height=200&orientation=squarish&flag=ca1e71d7-9a7e-46d2-befd-1dc7d7c5b691" alt="프로필" />
-              </div>
+      <nav className="bg-white shadow-sm text-gray-900">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-900">
+          <div className="flex justify-between h-16 text-gray-900">
+            <div className="flex items-center text-gray-900">
+              <Link to="/">
+                <img className="h-8 w-auto" src="/images/logoo.png" alt="로고" />
+              </Link>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* 사이드바 */}
+      {/* 메인 레이아웃 */}
       <div className="flex h-[calc(100vh-4rem)]">
-        <aside className="w-64 bg-white shadow-sm">
-          <div className="p-4">
-            <div className="flex items-center space-x-3 mb-6">
-              <img className="h-12 w-12 rounded-full" src="https://creatie.ai/ai/api/search-image?query=A professional headshot of a young Asian person with a friendly smile, wearing casual business attire, against a clean white background&width=200&height=200&orientation=squarish&flag=9301ff17-3afc-4d2b-99f9-333ec988ddbc" alt="프로필" />
-              <div>
-                <h3 className="font-medium">김영양</h3>
-                <p className="text-sm text-gray-500">건강관리 중</p>
-              </div>
-            </div>
-            <nav className="space-y-1">
-              <a href="#" className="bg-teal-600 text-white group flex items-center px-3 py-2 text-sm font-medium rounded-md">
-                <i className="fas fa-home w-6"></i> 대시보드
-              </a>
-              <a href="#" className="text-gray-600 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md">
-                <i className="fas fa-calendar w-6"></i> 복용 일정
-              </a>
-              <a href="#" className="text-gray-600 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md">
-                <i className="fas fa-pills w-6"></i> 내 영양제
-              </a>
-              <a href="#" className="text-gray-600 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md">
-                <i className="fas fa-chart-line w-6"></i> 건강 분석
-              </a>
-              <a href="#" className="text-gray-600 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md">
-                <i className="fas fa-cog w-6"></i> 설정
-              </a>
-              <div className="mt-6 p-3 bg-gray-50 rounded-md">
-                <h4 className="text-sm font-medium text-gray-600 mb-2">미니 달력</h4>
-                <div className="grid grid-cols-7 gap-1 text-center text-xs">
-                  <div className="text-gray-500">일</div>
-                  <div className="text-gray-500">월</div>
-                  <div className="text-gray-500">화</div>
-                  <div className="text-gray-500">수</div>
-                  <div className="text-gray-500">목</div>
-                  <div className="text-gray-500">금</div>
-                  <div className="text-gray-500">토</div>
-                  <div className="text-gray-300">30</div>
-                  <div className="text-gray-300">31</div>
-                  <div>1</div>
-                  <div>2</div>
-                  <div>3</div>
-                  <div>4</div>
-                  <div>5</div>
-                  <div>6</div>
-                  <div>7</div>
-                  <div>8</div>
-                  <div>9</div>
-                  <div className="bg-green-100 text-green-800 rounded-full">10</div>
-                  <div className="bg-red-100 text-red-800 rounded-full">11</div>
-                  <div className="bg-green-100 text-green-800 rounded-full">12</div>
-                  <div className="bg-gray-100 text-gray-400 rounded-full">13</div>
-                  <div className="bg-gray-100 text-gray-400 rounded-full">14</div>
-                  <div>15</div>
-                  <div>16</div>
-                  <div>17</div>
-                  <div>18</div>
-                  <div>19</div>
-                  <div>20</div>
-                  <div>21</div>
-                  <div>22</div>
-                  <div>23</div>
-                  <div>24</div>
-                  <div>25</div>
-                  <div>26</div>
-                  <div>27</div>
-                  <div>28</div>
-                  <div>29</div>
-                  <div>30</div>
-                </div>
-              </div>
-            </nav>
-          </div>
+        {/* 사이드바 */}
+        <aside className="w-64 bg-white shadow-sm p-4">
+          <nav className="space-y-1">
+            <Link to="/schedule" className="text-gray-600 hover:bg-gray-50 flex items-center px-3 py-2 text-sm font-medium rounded-md">
+              <i className="fas fa-calendar w-6"></i> 복용 일정
+            </Link>
+          </nav>
         </aside>
 
         {/* 메인 콘텐츠 */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <div className="mb-8">
-              <div className="bg-white shadow rounded-lg">
-                <div className="px-4 py-5 sm:p-6">
-                  <div className="sm:flex sm:items-center sm:justify-between">
-                    <div>
-                      <h3 className="text-lg font-medium leading-6 text-gray-900">영양제 섭취 설명</h3>
-                      <div className="mt-2 text-sm text-gray-500">
-                        <p>각 영양제는 식사 시간과 연계하여 섭취해주세요.</p>
-                        <p>복용 시간을 지켜 규칙적으로 섭취하는 것이 중요합니다.</p>
-                      </div>
-                    </div>
-                    <div className="mt-4 sm:mt-0">
-                      <a href="#" className="inline-flex items-center text-sm font-medium text-teal-600 hover:text-teal-700">
-                        자세히 보기<i className="fas fa-arrow-right ml-2"></i>
-                      </a>
-                    </div>
-                  </div>
+        <main className="flex-1 overflow-y-auto p-6">
+          <div className="max-w-7xl mx-auto">
+
+            {/* 🗓 오늘의 영양제 */}
+            <h1 className="text-2xl font-semibold text-gray-900 mb-6">오늘의 영양제</h1>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div className="bg-white shadow rounded-lg p-5 flex items-center">
+                <i className="fas fa-sun text-yellow-400 text-2xl"></i>
+                <div className="ml-3">
+                  <h4 className="text-lg font-medium text-gray-900">아침</h4>
+                  <p className="text-sm text-gray-900">{todayPlan[0]}, {todayPlan[1]}</p>
+                </div>
+              </div>
+              <div className="bg-white shadow rounded-lg p-5 flex items-center">
+                <i className="fas fa-moon text-blue-500 text-2xl"></i>
+                <div className="ml-3">
+                  <h4 className="text-lg font-medium text-gray-900">저녁</h4>
+                  <p className="text-sm text-gray-900">마그네슘, 칼슘</p>
                 </div>
               </div>
             </div>
 
-            <h1 className="text-2xl font-semibold text-gray-900">오늘의 영양제</h1>
-            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="bg-white overflow-hidden shadow rounded-lg">
-                <div className="p-5">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <i className="fas fa-sun text-yellow-400 text-2xl"></i>
-                    </div>
-                    <div className="ml-3">
-                      <h4 className="text-lg font-medium">아침</h4>
-                      <p className="text-sm text-gray-500">비타민 C, 오메가-3</p>
-                    </div>
+            {/* 🗓 주간 복용 일정 */}
+            <div className="bg-white shadow rounded-lg p-5 mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">📅 주간 복용 계획</h2>
+              <div className="grid grid-cols-7 gap-2 text-center">
+                {weekDates.map((day, index) => (
+                  <div key={index} className="p-3 border rounded-lg bg-gray-100">
+                    <p className="text-sm font-semibold">{day.toLocaleDateString('ko-KR', { weekday: 'short' })}</p>
+                    <p className="text-xs text-gray-600">{day.toLocaleDateString()}</p>
+                    <ul className="mt-1 text-xs text-gray-700">
+                      {weeklyPlan[day.toLocaleDateString('en-US', { weekday: 'long' })]?.map((item, i) => (
+                        <li key={i}>✅ {item}</li>
+                      )) || <li>❌ 없음</li>}
+                    </ul>
                   </div>
-                </div>
-              </div>
-
-              <div className="bg-white overflow-hidden shadow rounded-lg">
-                <div className="p-5">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <i className="fas fa-moon text-blue-500 text-2xl"></i>
-                    </div>
-                    <div className="ml-3">
-                      <h4 className="text-lg font-medium">저녁</h4>
-                      <p className="text-sm text-gray-500">마그네슘, 칼슘</p>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
+
+            {/* 📆 달력 */}
+            <div className="mt-4 p-4 bg-white shadow rounded-lg">
+              <h2 className="text-xl font-semibold mb-4 text-gray-900">복용 일정</h2>
+              <Calendar onChange={setDate} value={date} />
+              <p className="mt-4 text-gray-900">선택한 날짜: {date.toLocaleDateString()}</p>
+            </div>
+
           </div>
         </main>
       </div>

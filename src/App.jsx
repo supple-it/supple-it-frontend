@@ -5,6 +5,7 @@ import Footer from './components/include/Footer';
 import Home from './pages/Home';
 import MyPage from './pages/MyPage';
 import Login from './pages/Login';
+import ProductDetail from './pages/ProductDetail';
 
 const AppContent = () => {
   const location = useLocation(); // 현재 URL 경로를 얻음
@@ -21,6 +22,7 @@ const AppContent = () => {
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/detail" element={<ProductDetail />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/login" element={<Login />} />
         </Routes>
