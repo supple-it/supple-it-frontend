@@ -1,7 +1,11 @@
+import Header from '../components/include/Header';
+import Navbar from '../components/include/Navbar';
 import ProductGrid from './ProductGrid'; // 추가
 
 const Home = () => {
   return (
+    <>
+    <Navbar />
     <div className="flex flex-col bg-gray-50 font-['Noto_Sans_KR']">
       {/* Navbar */}
 
@@ -25,6 +29,7 @@ const Home = () => {
         <ProductGrid />
       </div>
     </div>
+    </>
   );
 };
 
