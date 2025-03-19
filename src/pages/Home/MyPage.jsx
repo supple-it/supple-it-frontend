@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import Header from '../../components/include/Header';
+import Footer from '../../components/include/Footer';
 
 const MyPage = () => {
   const [date, setDate] = useState(new Date());
@@ -36,18 +38,7 @@ const MyPage = () => {
 
   return (
     <div className="bg-gray-50 font-['Noto_Sans_KR']">
-      {/* 네비게이션 바 */}
-      <nav className="bg-white shadow-sm text-gray-900">
-        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-900">
-          <div className="flex justify-between h-16 text-gray-900">
-            <div className="flex items-center text-gray-900">
-              <Link to="/">
-                <img className="h-8 w-auto" src="/images/logoo.png" alt="로고" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+     <Header/>
 
       {/* 메인 레이아웃 */}
       <div className="flex h-[calc(100vh-4rem)]">

@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import "./ProductDetail.css";
+import Header from "../../components/include/Header";
+import Footer from "../../components/include/Footer";
 
 const ProductDetail = () => {
   const [showDetail, setShowDetail] = useState(false);
 
   return (
     <div className="font-NotoSans bg-gray-50">
+     <Header/>
       {/* 메인 컨텐츠 */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col min-h-screen">
         <div className="text-center mb-12">
@@ -70,6 +73,7 @@ const ProductDetail = () => {
           </div>
         </section>
       </main>
+      <Footer/>
     </div>
   );
 };
