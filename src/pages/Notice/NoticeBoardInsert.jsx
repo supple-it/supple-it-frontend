@@ -3,7 +3,7 @@ import { Container, Form, Button, Card } from "react-bootstrap";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/include/Navbar";
+import Header from "../../components/include/Header";
 
 const NoticeBoardInsert = ({ onSubmit }) => {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const NoticeBoardInsert = ({ onSubmit }) => {
 
   return (
     <>
-      <Navbar />
+      <Header />
       <div style={{ backgroundColor: "#c0ebe5", padding: "20px", minHeight: "100vh" }}>
         <Container style={{ marginTop: "50px" }}>
           <Card className="p-4 shadow-lg">

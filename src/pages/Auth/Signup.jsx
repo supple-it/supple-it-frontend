@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, ButtonGroup, ToggleButton, Modal } from "react-bootstrap";
-import "./Signup.css";
-import Header from "../components/include/Header";
-import Navbar from "../components/include/Navbar";
-
+import "../Auth/Signup.css";
+import Header from "../../components/include/Header";
 const Signup = () => {
   //회원가입 데이터 
   const [formData, setFormData] = useState({
@@ -42,13 +40,13 @@ const Signup = () => {
 
   return (
     <>
-    <Navbar />
+    <Header/>
     <div className="signup-page">
       <Container className="signup-container">
         <Row className="justify-content-md-center">
           <Col md={6}>
             <div className="signup-card">
-              <h2 className="mb-3">회원가입</h2>
+              <h2 className="mb-4">회원가입</h2>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label className="signup-form-label">이메일</Form.Label>
@@ -182,6 +180,7 @@ const Signup = () => {
         </Row>
       </Container>
     </div>
+
     </>
   );
 };

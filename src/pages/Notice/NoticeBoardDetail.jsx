@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
-import Navbar from "../components/include/Navbar";
+import Header from "../../components/include/Header";
 
 const NoticeBoardDetail = ({ notices }) => {
   const { id } = useParams();
@@ -25,7 +25,7 @@ const NoticeBoardDetail = ({ notices }) => {
 
   return (
     <>
-      <Navbar />
+      <Header />
       <Container style={{ marginTop: "100px", maxWidth: "1100px" }}>
         <Card className="p-5 shadow-lg d-flex flex-column" style={{ height: "auto" }}>
           <h2 className="mb-4" style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{notice.title}</h2>

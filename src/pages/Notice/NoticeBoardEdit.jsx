@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Container, Card, Button, Form } from "react-bootstrap";
 import ReactQuill from "react-quill-new";  // ✅ TinyMCE 대신 ReactQuill 사용
 import "react-quill-new/dist/quill.snow.css";
-import Navbar from "../components/include/Navbar";
+import Header from "../../components/include/Header";
 
 const NoticeBoardEdit = ({ notices }) => {
   const { id } = useParams();
@@ -52,7 +52,7 @@ const NoticeBoardEdit = ({ notices }) => {
 
   return (
     <>
-      <Navbar />
+      <Header />
       <Container style={{ marginTop: "100px" }}>
         <Card className="p-4 shadow-lg">
           <h2 className="mb-3" style={{ fontSize: "1.8rem", fontWeight: "bold" }}>

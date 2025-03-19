@@ -14,18 +14,20 @@ const Login = () => {
       console.log('로그인 시도:', username, password);
     }
   };
-  
 
   return (
     <div className="login-container"
-  style={{
-    backgroundImage: "url('/images/back.jpg')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  }}
->
+      style={{
+        backgroundImage: "url('/images/back.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <div className="login-box">
+        {/* 로고 이미지 추가 */}
+        <img src="/images/logo.png" alt="사이트 로고" className="logo" />
+
         <h2>로그인</h2>
 
         <div className="input-group">
@@ -57,23 +59,18 @@ const Login = () => {
         </div>
 
         {/* 구글, 카카오, 네이버 로그인 PNG 버튼 */}
-        <div className="social-login" style={{border: 'none' }}>
+        <div className="social-login" style={{ border: 'none' }}>
           <button className="social-button google">
             <a href="https://accounts.google.com/ServiceLogin" target="_blank" rel="noopener noreferrer">
               <img src="/images/Google.png" alt="구글 로그인" className="social-icon" />
             </a>
           </button>
-          <button className="social-button kakao">
-            <a href="https://accounts.kakao.com/login/?continue=https%3A%2F%2Faccounts.kakao.com%2Fweblogin%2Faccount#login" target="_blank" rel="noopener noreferrer">
-              <img src="/images/kakao.png" alt="카카오 로그인" className="social-icon" />
+          <button className="social-button naver">
+            <a href="https://nid.naver.com/nidlogin.login" target="_blank" rel="noopener noreferrer">
+              <img src="/images/Naver.png" alt="네이버 로그인" className="social-icon" />
             </a>
           </button>
-          <button className="social-button naver">  {/* 네이버 버튼에 개별 클래스 추가 */}
-    <a href="https://nid.naver.com/nidlogin.login" target="_blank" rel="noopener noreferrer">
-      <img src="/images/Naver.png" alt="네이버 로그인" className="social-icon" />
-    </a>
-  </button>
-</div>
+        </div>
 
         {/* 팝업 모달 */}
         {isPopupVisible && (

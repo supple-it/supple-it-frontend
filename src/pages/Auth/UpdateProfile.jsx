@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, ButtonGroup, ToggleButton } from "react-bootstrap";
-import "./Signup.css";
-import Navbar from "../components/include/Navbar";
+import "../Auth/Signup.css";
+import Header from "../../components/include/Header";
 
 const UpdateProfile = () => {
   // 사용자 정보 미리 불러오는 예시 (이 값은 실제 서버에서 받아온 값으로 대체해야 함.)
@@ -53,7 +53,7 @@ const UpdateProfile = () => {
 
   return (
     <>
-      <Navbar />
+      <Header />
       <div className="signup-page">
         <Container className="signup-container">
           <Row className="justify-content-md-center">

@@ -25,7 +25,6 @@ const Navbar = () => {
             <Link to="/" className="text-gray-700 hover:text-teal-500 font-medium">홈</Link>
             <Link to="/detail" className="text-gray-700 hover:text-teal-500 font-medium">상세페이지</Link>
             <Link to="/mypage" className="text-gray-700 hover:text-teal-500 font-medium">마이페이지</Link>
-            <Link to="/notices" className="text-gray-700 hover:text-teal-500 font-medium">공지사항</Link>
           </div>
 
           {/* 로그인 및 회원가입 버튼 */}

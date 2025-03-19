@@ -1,8 +1,8 @@
 import { Button, Card, Form, Table, Pagination } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Navbar from "../components/include/Navbar";
 import "./NoticeBoard.css";
+import Header from "../../components/include/Header";
 
 const NoticeBoard = ({ notices }) => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const NoticeBoard = ({ notices }) => {
 
   return (
     <>
-      <Navbar />
+      <Header />
       <div className="notice-container">
         <Card className="notice-card shadow-lg p-4">
           <Card.Body className="d-flex flex-column flex-grow-1">
