@@ -12,7 +12,7 @@
 }
 
 .login-box {
- background-color: rgba(255, 255, 255, 0.79); /* 반투명한 흰색 배경 */
+ background-color: rgba(146, 190, 183, 0.86); /* 반투명한 흰색 배경 */
  padding: 20px;
  border-radius: 35px;
  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -23,29 +23,36 @@
 h2 {
  text-align: center;
  margin-bottom: 20px;
+ border-radius: 35px;
 }
 
 .input-group {
  margin-bottom: 15px;
+ border-radius: 25px;
 }
+
 
 label {
  display: block;
  font-weight: bold;
  margin-bottom: 5px;
+ border-radius: 35px;
+ font-color: black;
+ 
 }
 
 input {
- width: 92.5%;
+ width: 100%;
  padding: 13px;
- border: 1px solid #ccc;
  border-radius: 15px;
+ set-position: center;
+ color: teal;
 }
 
 .login-button {
  width: 100%;
  padding: 13px;
- background-color: #4caf50;
+ background-color:rgb(82, 204, 184);
  color: white;
  border: none;
  border-radius:15px;
@@ -54,7 +61,7 @@ input {
 }
 
 .login-button:hover {
- background-color: #45a049;
+ background-color:rgb(83, 190, 167);
 }
 
 .signup-link {
@@ -86,7 +93,7 @@ input {
  width: 200px;
  object-fit: contain;
  border: none;
- outline: none;
+ outline-color: black;
 }
 
 
@@ -104,7 +111,8 @@ input {
 }
 
 .popup-message {
- background-color: white;
+ background-color: rgb(253, 247, 220);
+ color: black;
  padding: 20px;
  border-radius: 35px;
  text-align: center;
@@ -114,7 +122,7 @@ input {
 .popup-close-button {
  margin-top: 10px;
  padding: 5px 10px;
- background-color: #f44336;
+ background-color:rgb(56, 161, 120);
  color: white;
  border: none;
  border-radius: 14px;
@@ -122,5 +130,5 @@ input {
 }
 
 .popup-close-button:hover {
- background-color: #e53935;
+ background-color:rgb(45, 126, 95);
 }
