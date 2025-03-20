@@ -24,6 +24,7 @@
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "axios": "^1.8.2",
+    "install": "^0.13.0",
     "navbar": "^3.0.0",
     "next": "^15.2.2",
     "react": "^19.0.0",

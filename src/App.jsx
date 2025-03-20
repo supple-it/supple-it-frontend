@@ -39,6 +39,7 @@ function App() {
         <Route path="/notices/edit/:id" element={<NoticeBoardEdit notices={notices} />} />
         <Route path="/newnotice" element={<NoticeBoardInsert onSubmit={handleAddNotice} />} />
         <Route path="/schedule" element={<Schedule />} />
+        <Route path="/product" element={<ProductList />} />
       </Routes>
     </Router>
   );
