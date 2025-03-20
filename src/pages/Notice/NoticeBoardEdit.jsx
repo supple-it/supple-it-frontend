@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Card, Button, Form } from "react-bootstrap";
-import Header from "../components/include/Header";
-import { Editor } from "@tinymce/tinymce-react"; // TinyMCE 에디터 추가
+import ReactQuill from "react-quill-new";  // ✅ TinyMCE 대신 ReactQuill 사용
+import "react-quill-new/dist/quill.snow.css";
+import Header from "../../components/include/Header";
 
 const NoticeBoardEdit = ({ notices }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const notice = notices.find((n) => n.id === parseInt(id));
 
   const [title, setTitle] = useState("");
@@ -33,10 +33,21 @@ const NoticeBoardEdit = ({ notices }) => {
     );
   }
 
-  // ✅ 수정 저장 (현재는 alert만 띄움)
+  // ✅ ReactQuill 모듈 설정 (아까와 동일)
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["bold", "italic", "underline", "strike"],
+      ["link", "image"],
+      ["clean"],
+    ],
+  };
+
+  // ✅ 저장 (현재는 alert만 띄움, 실제 저장 로직 추가 필요)
   const handleSave = () => {
-    alert("수정 내용 저장 기능은 나중에 추가될 예정입니다!");
-    navigate(`/notices/${id}`); // 수정 후 상세 페이지로 이동
+    alert("수정된 내용이 저장되었습니다! (실제 저장 기능 추가 예정)");
+    navigate(`/notices/${id}`);
   };
 
   return (
@@ -44,9 +55,10 @@ const NoticeBoardEdit = ({ notices }) => {
       <Header />
       <Container style={{ marginTop: "100px" }}>
         <Card className="p-4 shadow-lg">
-          <h2 className="mb-3">
+          <h2 className="mb-3" style={{ fontSize: "1.8rem", fontWeight: "bold" }}>
             📢 공지사항 수정
           </h2>
+
           <Form.Group className="mb-3">
             <Form.Label>제목</Form.Label>
             <Form.Control
@@ -55,23 +67,12 @@ const NoticeBoardEdit = ({ notices }) => {
               onChange={(e) => setTitle(e.target.value)}
             />
           </Form.Group>
+
           <Form.Group className="mb-3">
             <Form.Label>내용</Form.Label>
-            <Editor
-              initialValue={content}
-              onEditorChange={(newContent) => setContent(newContent)}
-              init={{
-                height: 300,
-                menubar: false,
-                plugins: ["advlist autolink lists link charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table paste code help wordcount"],
-                toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent",
-              }}
-            />
+            <ReactQuill theme="snow" value={content} onChange={setContent} modules={modules} />
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>작성자</Form.Label>
-            <Form.Control type="text" value="관리자" readOnly />
-          </Form.Group>
+
           <div className="d-flex justify-content-end">
             <Button variant="secondary" className="me-2" onClick={() => navigate(`/notices/${id}`)}>
               취소

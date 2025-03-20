@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, ButtonGroup, ToggleButton, Modal } from "react-bootstrap";
 import "./Signup.css";
-import Header from "../components/include/Header";
-
+import Header from "../../components/include/Header";
 const Signup = () => {
   //회원가입 데이터 
   const [formData, setFormData] = useState({
@@ -41,7 +40,7 @@ const Signup = () => {
 
   return (
     <>
-    <Header />
+    <Header/>
     <div className="signup-page">
       <Container className="signup-container">
         <Row className="justify-content-md-center">
@@ -181,6 +180,7 @@ const Signup = () => {
         </Row>
       </Container>
     </div>
+
     </>
   );
 };

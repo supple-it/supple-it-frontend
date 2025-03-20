@@ -1,19 +1,19 @@
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import MyPage from "./pages/MyPage";
-import ProductList from "./pages/ProductList";
-import ProductDetail from "./pages/ProductDetail";
-import ReviewForm from "./pages/ReviewForm";
-import FavoriteList from "./pages/FavoriteList";
-import NoticeBoard from "./pages/NoticeBoard";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Auth/Login";
+import Signup from "./pages/Auth/Signup";
+import MyPage from "./pages/Home/MyPage";
+import ProductList from "./pages/Product/ProductList";
+import ProductDetail from "./pages/Product/ProductDetail";
+import ReviewForm from "./pages/Product/ReviewForm";
+import FavoriteList from "./pages/Home/FavoriteList";
+import NoticeBoard from "./pages/Notice/NoticeBoard";
 import Schedule from "./pages/schedule";
-import NoticeBoardInsert from "./pages/NoticeBoardInsert";
+import NoticeBoardInsert from "./pages/Notice/NoticeBoardInsert";
 import { useState } from "react";
-import NoticeBoardDetail from "./pages/NoticeBoardDetail";
-import NoticeBoardEdit from "./pages/NoticeBoardEdit";
+import NoticeBoardDetail from "./pages/Notice/NoticeBoardDetail";
+import NoticeBoardEdit from "./pages/Notice/NoticeBoardEdit";
 
 function App() {
   //공지사항 관리 시 리덕스 등의 상태관리가 필요한데 리덕스 사용대신 App.jsx에서 넘겨주는 걸로 했습니다.
@@ -29,9 +29,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage" element={<MyPage />} />        
         <Route path="/products" element={<ProductList />} />
-        <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/productdetail" element={<ProductDetail />} />
         <Route path="/review" element={<ReviewForm />} />
         <Route path="/favorites" element={<FavoriteList />} />
         <Route path="/notices" element={<NoticeBoard notices={notices}/>} />
