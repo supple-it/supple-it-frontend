@@ -37,21 +37,33 @@ const NoticeBoardEdit = () => {
       }
     };
 
-    const fetchNotice = async () => {
-      try {
-        setLoading(true);
-        const response = await getNoticeById(id);
-        const noticeData = response.data;
-        setNotice(noticeData);
-        setTitle(noticeData.title);
-        setContent(noticeData.content);
-        setLoading(false);
-      } catch (error) {
-        console.error("공지사항 조회 중 오류:", error);
-        setError("공지사항을 불러오는 중 오류가 발생했습니다.");
-        setLoading(false);
-      }
-    };
+const fetchNotice = async () => {
+  try {
+    setLoading(true);
+    console.log("상세 조회 요청 ID:", id); // ID 로그 출력
+
+    const response = await getNoticeById(id); // 데이터 받아오기
+    console.log("서버 응답 객체:", response); // 응답 객체 로그 출력
+
+    // 응답에 상태 코드가 없거나 데이터가 없으면 예외 처리
+    if (!response || !response.data) {
+      throw new Error("응답에 데이터가 없습니다");
+    }
+
+    const noticeData = response.data;
+    console.log("공지사항 상세 데이터:", noticeData); // 응답 데이터 로그 출력
+
+    setNotice(noticeData);
+    setTitle(noticeData.title);
+    setContent(noticeData.content);
+    setLoading(false);
+  } catch (error) {
+    console.error("공지사항 조회 중 오류:", error);
+    setError(`공지사항을 불러오는 중 오류가 발생했습니다: ${error.message}`);
+    setLoading(false);
+  }
+};
+
 
     checkUserRole();
     fetchNotice();

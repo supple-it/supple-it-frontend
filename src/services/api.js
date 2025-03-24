@@ -24,6 +24,7 @@ api.interceptors.request.use(
     }
     
     const token = localStorage.getItem('accessToken');
+    console.log(token)
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -154,11 +155,16 @@ export const getNotices = async () => {
 };
 
 export const getNoticeById = async (id) => {
-  // 캐싱 방지를 위한 타임스탬프 추가
-  const timestamp = new Date().getTime();
-  // api 인스턴스 대신 api.get 사용으로 통일
-  return api.get(`/notice/${id}?_=${timestamp}`);
+  try {
+    const response = await axios.get(`/api/notice/${id}`);
+    console.log("서버 응답 객체:", response); // 응답 확인
+    return response;
+  } catch (error) {
+    console.error("API 요청 중 오류:", error);
+    throw error;
+  }
 };
+
 
 // 본문에서 Base64 이미지 추출 및 파일로 변환하는 함수
 function extractBase64Images(htmlContent) {
