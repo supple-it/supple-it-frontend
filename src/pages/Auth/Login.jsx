@@ -46,6 +46,9 @@ const Login = () => {
         
           // 역할 정보 저장 (ADMIN 또는 USER)
           localStorage.setItem('role', userInfoResponse.data.memberRole);
+          //📛📛 유정 : 이메일, 멤버아이디 저장
+          localStorage.setItem('email', userInfoResponse.data.email);
+          localStorage.setItem('memberId', userInfoResponse.data.memberId);
           
           // 로그인 상태 업데이트를 위한 이벤트 발생
           window.dispatchEvent(new Event('storage'));

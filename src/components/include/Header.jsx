@@ -23,6 +23,9 @@ const Header = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('role');
+    //📛📛 유정 추가
+    localStorage.removeItem('email');
+    localStorage.removeItem('memberId');
     setIsLoggedIn(false);
     setIsAdmin(false);
     navigate('/');
