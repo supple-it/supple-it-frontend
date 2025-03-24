@@ -36,6 +36,9 @@ const GoogleCallback = () => {
         if (response.data && response.data.data) {
           const responseData = response.data.data;
           console.log('응답 데이터 내부:', responseData);
+          //📛📛 유정 추가
+          localStorage.setItem('memberId', responseData.member.memberId)
+          localStorage.setItem('email', responseData.member.email)
           
           // accessToken이 data 객체 내부에 있는 경우
           if (responseData.accessToken) {

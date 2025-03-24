@@ -8,7 +8,10 @@ import Signup from "./pages/Auth/Signup";
 import MyPage from "./pages/Home/MyPage";
 import ProductList from "./pages/Product/ProductList";
 import ProductDetail from "./pages/Product/ProductDetail";
-import ReviewForm from "./pages/Product/ReviewForm";
+import ReviewForm from "./pages/Review/ReviewForm";
+import ReviewBoard from "./pages/Review/ReviewBoard";
+import ReviewEdit from "./pages/Review/ReviewEdit";
+import ReviewDetail from "./pages/Review/ReviewDetail";
 import FavoriteList from "./pages/Home/FavoriteList";
 import NoticeBoard from "./pages/Notice/NoticeBoard";
 import NoticeBoardDetail from "./pages/Notice/NoticeBoardDetail";
@@ -50,6 +53,12 @@ function App() {
         <Route path="/notices/:id" element={<NoticeBoardDetail />} />
         <Route path="/notices/edit/:id" element={<NoticeBoardEdit />} />
         <Route path="/newnotice" element={<NoticeBoardInsert onSubmit={handleAddNotice} />} />
+
+        {/* 📛 리뷰 라우트 */}
+        <Route path="/reviews" element={<ReviewBoard />} />
+        <Route path="/newreview" element={<ReviewForm />} />
+        <Route path="/reviews/:id" element={<ReviewDetail />} />
+        <Route path="/reviews/edit/:id" element={<ReviewEdit />} />
         
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/callback/google" element={<GoogleCallback />} />
