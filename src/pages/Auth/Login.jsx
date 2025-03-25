@@ -1,3 +1,4 @@
+// src/pages/Auth/Login.jsx (전체 수정)
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
@@ -35,7 +36,7 @@ const Login = () => {
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
 
-        // 사용자 정보 요청 및 역할 저장 //0320
+        // 사용자 정보 요청 및 역할 저장
         try {
           const userInfoResponse = await axios.get('http://localhost:8000/api/member/info', {
             headers: {
@@ -43,26 +44,31 @@ const Login = () => {
             }
           });
         
-        // 역할 정보 저장 (ADMIN 또는 USER)
-        localStorage.setItem('role', userInfoResponse.data.memberRole);
-        
-        // 로그인 상태 업데이트를 위한 이벤트 발생
-        window.dispatchEvent(new Event('storage'));
-        
-        // 홈페이지로 이동
-        navigate('/');
-      } catch (userInfoError) {
-        console.error('사용자 정보 요청 오류:', userInfoError);
-        setError('사용자 정보를 가져오는 중 오류가 발생했습니다.');
+          // 역할 정보 저장 (ADMIN 또는 USER)
+          localStorage.setItem('role', userInfoResponse.data.memberRole);
+          //📛📛 유정 : 이메일, 멤버아이디 저장
+          localStorage.setItem('email', userInfoResponse.data.email);
+          localStorage.setItem('memberId', userInfoResponse.data.memberId);
+          
+          // 로그인 상태 업데이트를 위한 이벤트 발생
+          window.dispatchEvent(new Event('storage'));
+          
+          // 홈페이지로 이동
+          navigate('/');
+        } catch (userInfoError) {
+          console.error('사용자 정보 요청 오류:', userInfoError);
+          setError('사용자 정보를 가져오는 중 오류가 발생했습니다.');
+        }
+      } else {
+        setError('로그인에 실패했습니다. 응답에 토큰이 없습니다.');
       }
-    } else {
-      setError('로그인에 실패했습니다. 응답에 토큰이 없습니다.');
+    } catch (error) {
+      console.error('로그인 오류:', error);
+      setError(error.response?.data?.message || '로그인 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    console.error('로그인 오류:', error);
-    setError(error.response?.data?.message || '로그인 중 오류가 발생했습니다.');
-  }
-};
+  };
 
   // 구글 로그인 처리 함수
   const handleGoogleLogin = () => {
@@ -97,7 +103,7 @@ const Login = () => {
       // CSRF 보호를 위해 state 저장
       sessionStorage.setItem('naverState', state);
       
-      // URL에 state 파라미터 추가 - localStorage 사용하지 않음
+      // URL에 state 파라미터 추가
       const authUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;      
       
       console.log('네이버 로그인 URL로 이동:', authUrl);
@@ -157,6 +163,7 @@ const Login = () => {
 
         <div className="signup-link">
           <p>계정이 없으신가요? <a href="/signup">회원가입</a></p>
+          <p><a href="/find-password">비밀번호를 잊으셨나요?</a></p>
         </div>
 
         {/* 소셜 로그인 버튼 */}

@@ -1,33 +1,81 @@
-/* 전체 화면을 채우도록 스타일 조정 */
-.schedule-container {
- margin-top : 50px;
- display: flex;
- flex-direction: column;
- height: 100vh;
- background-color: #f5f5f5;
- font-family: "Arial", sans-serif;
+/* 글씨 애니메이션 */
+.sidebar-text {
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
 }
 
-/* 캘린더가 화면을 가득 채우도록 설정 */
-.calendar-container {
- flex: 1;
- display: flex;
- justify-content: center;
- align-items: center;
- width: 100%;
- padding: 10px;
+.sidebar-hidden {
+    opacity: 0;
+    visibility: hidden;
 }
 
-/* FullCalendar 기본 스타일 조정 */
-.fc {
- width: 100%;
- height: 100%;
+.sidebar-visible {
+    opacity: 1;
+    visibility: visible;
 }
 
-.fc-daygrid-day {
- min-height: 100px; /* 셀 크기 조정 */
+/* 캘린더 스타일 */
+.react-calendar {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: white;
+    border: 1px solid #a0a0a0;
+    line-height: 1.125em;
 }
 
-.fc-daygrid-body {
- height: 100%;
+.react-calendar__tile {
+    max-width: 100%;
+    padding: 10px 6.6667px;
+    background: none;
+    text-align: center;
+    line-height: 16px;
+}
+
+.react-calendar__tile--now {
+    background: #f0f8ff;
+    color: #3182ce;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+    background-color: #e6f2ff;
+}
+
+.react-calendar__tile--active {
+    background: #3182ce !important;
+    color: white !important;
+}
+
+.rbc-event {
+    background-color: #209696;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.rbc-event:hover {
+    background-color: #1a8c8c;
+}
+
+.rbc-day-bg {
+    background-color: #f0f8ff;
+}
+
+.rbc-today {
+    background-color: #e0f7fa;
+}
+
+.rbc-time-slot {
+    border-left: 2px solid #209696;
+}
+
+/* 상태별 배경색 */
+.bg-green-200 {
+    background-color: #c6f6d5;
+}
+
+.bg-red-200 {
+    background-color: #feb2b2;
+}
+
+.bg-gray-200 {
+    background-color: #e2e8f0;
 }

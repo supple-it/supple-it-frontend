@@ -29,6 +29,9 @@ const NaverCallback = () => {
         if (response.data && response.data.data) {
           // 응답 구조가 { data: { accessToken, refreshToken } } 인 경우
           const responseData = response.data.data;
+          //📛📛 유정 추가
+          localStorage.setItem('memberId', responseData.member.memberId)
+          localStorage.setItem('email', responseData.member.email)
           
           if (responseData.accessToken) {
             localStorage.setItem('accessToken', responseData.accessToken);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Form, Table, Pagination } from "react-bootstrap";
 import { getNotices } from '../../services/api';
+import axios from 'axios'; // axios 직접 임포트
 import "./NoticeBoard.css";
 import Header from "../../components/include/Header";
 
@@ -14,6 +15,7 @@ const NoticeBoard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAdmin, setIsAdmin] = useState(false);
   const itemsPerPage = 10;
+  const apiBaseUrl = "http://localhost:8000/api";
 
   // 날짜 포맷 함수
   const formatDate = (dateString) => {
@@ -31,13 +33,16 @@ const NoticeBoard = () => {
     const fetchNotices = async () => {
       try {
         setLoading(true);
-        const response = await getNotices();
+        // 캐시 방지를 위한 타임스탬프 추가
+        const timestamp = new Date().getTime();
+        const response = await axios.get(`${apiBaseUrl}/notice?_=${timestamp}`);
+        
         console.log("공지사항 API 응답:", response.data);
-        setNotices(response.data);
+        setNotices(response.data || []);
         setLoading(false);
       } catch (error) {
         console.error("공지사항 조회 중 오류:", error);
-        setError("공지사항을 불러오는 중 오류가 발생했습니다.");
+        setError(`공지사항을 불러오는 중 오류가 발생했습니다: ${error.message}`);
         setLoading(false);
       }
     };
@@ -54,8 +59,35 @@ const NoticeBoard = () => {
   }, []);
 
   // 로딩 및 에러 상태 처리
-  if (loading) return <div>로딩 중...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return (
+    <>
+      <Header />
+      <div className="notice-container">
+        <div className="text-center p-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">로딩 중...</span>
+          </div>
+          <p className="mt-2">공지사항을 불러오는 중입니다...</p>
+        </div>
+      </div>
+    </>
+  );
+  
+  if (error) return (
+    <>
+      <Header />
+      <div className="notice-container">
+        <Card className="notice-card shadow-lg p-4">
+          <div className="alert alert-danger">{error}</div>
+          <div className="text-center mt-3">
+            <Button variant="secondary" onClick={() => window.location.reload()}>
+              다시 시도하기
+            </Button>
+          </div>
+        </Card>
+      </div>
+    </>
+  );
 
   // 검색 및 페이지네이션 로직
   const filteredNotices = notices.filter((notice) =>
@@ -165,7 +197,7 @@ const NoticeBoard = () => {
                   ) : (
                     <tr>
                       <td colSpan="5" className="text-center text-muted">
-                        검색 결과가 없습니다.
+                        {searchTerm ? "검색 결과가 없습니다." : "등록된 공지사항이 없습니다."}
                       </td>
                     </tr>
                   )}
@@ -213,7 +245,7 @@ const NoticeBoard = () => {
               </div>
             ) : (
               <div style={{textAlign: 'center', marginTop: '10px'}}>
-                <small className="text-muted">현재 사용자 역할: {localStorage.getItem("role") || "없음"}</small>
+                <small className="text-muted">관리자만 글쓰기가 가능합니다</small>
               </div>
             )}
           </Card.Body>
