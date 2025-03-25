@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback,memo } from "react";
 import "./ProductDetail.css";
 import Footer from "../../components/include/Footer";
 import Header from "../../components/include/Header";
+import ReactMarkdown from 'react-markdown'; 
 
 
 const removeHtmlTags = (str) => {
@@ -17,10 +18,10 @@ const ProductDetail = () => {
   const [productDescription, setProductDescription] = useState('');
 
   useEffect(() => {
-    // localStorage에서 데이터 가져오기
-    const keyword = localStorage.getItem('selectedKeyword');
-    const products = localStorage.getItem('recommendedProducts');
-    const description = localStorage.getItem('productDescription');
+    // sessionStorage에서 데이터 가져오기
+    const keyword = sessionStorage.getItem('selectedKeyword');
+    const products = sessionStorage.getItem('recommendedProducts');
+    const description = sessionStorage.getItem('productDescription');
     
     if (keyword) {
       setSelectedKeyword(keyword);
@@ -132,8 +133,8 @@ const DetailContent = React.memo(({ showDetail, productDescription }) => {
         backgroundColor: showDetail ? "white" : "transparent",
       }}
     >
-      <div className="p-6">
-        {productDescription || '상세 설명이 없습니다.'}
+      <div className="text-description">
+        <ReactMarkdown>{productDescription}</ReactMarkdown>       
       </div>
     </div>
   );
