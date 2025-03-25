@@ -3,9 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Container, Form, Button, Card } from "react-bootstrap";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import { BsStarFill } from "react-icons/bs"; // ⭐ 아이콘 추가
 import Header from "../../components/include/Header";
 import { getReviewById, updateReview, searchProducts } from "../../services/api";
-
 
 const ReviewEdit = () => {
   const navigate = useNavigate();
@@ -15,51 +15,58 @@ const ReviewEdit = () => {
   const [content, setContent] = useState("");
   const [prdId, setPrdId] = useState("");
   const [productName, setProductName] = useState("");
-  const [productInput, setProductInput] = useState(""); 
+  const [productInput, setProductInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [rating, setRating] = useState(0); // ⭐ 별점 상태 추가
 
-    useEffect(() => {
-      const fetchReview = async () => {
-        try {
-          const res = await getReviewById(id);
-          setReview(res.data);
-          setTitle(res.data.title);
-          setContent(res.data.content);
-          setProductName(res.data.productName);
-          setProductInput(res.data.productName); 
-          setPrdId(res.data.prdId);
-        } catch (error) {
-          console.error("리뷰 불러오기 오류:", error);
-          alert("리뷰 정보를 불러오는 중 오류가 발생했습니다.");
-        }
-      };
-      fetchReview();
-    }, [id]);
-
-    // 제품 검색 함수
-    const findProducts = async (query) => {
-      setSearchTerm(query);
-      if (query.length < 1) {
-        setSearchResults([]);
-        return;
-      }
+  useEffect(() => {
+    const fetchReview = async () => {
       try {
-        const res = await searchProducts(query); // 제품 검색 API 호출
-        setSearchResults(res.data);
+        const res = await getReviewById(id);
+        setReview(res.data);
+        setTitle(res.data.title);
+        setContent(res.data.content);
+        setProductName(res.data.productName);
+        setProductInput(res.data.productName);
+        setPrdId(res.data.prdId);
+        setRating(res.data.rating || 0); // ⭐ 기존 별점 가져오기
       } catch (error) {
-        console.error("제품 검색 오류:", error);
+        console.error("리뷰 불러오기 오류:", error);
+        alert("리뷰 정보를 불러오는 중 오류가 발생했습니다.");
       }
     };
+    fetchReview();
+  }, [id]);
 
-    // 제품 선택 시 제품명 변경
-    const selectProduct = (product) => {
-      setPrdId(product.prdId);
-      setProductName(product.productName);
-      setProductInput(product.productName); 
-      setSearchTerm("");
+  // 제품 검색 함수
+  const findProducts = async (query) => {
+    setSearchTerm(query);
+    if (query.length < 1) {
       setSearchResults([]);
-    };
+      return;
+    }
+    try {
+      const res = await searchProducts(query);
+      setSearchResults(res.data);
+    } catch (error) {
+      console.error("제품 검색 오류:", error);
+    }
+  };
+
+  // 제품 선택 시 제품명 변경
+  const selectProduct = (product) => {
+    setPrdId(product.prdId);
+    setProductName(product.productName);
+    setProductInput(product.productName);
+    setSearchTerm("");
+    setSearchResults([]);
+  };
+
+  // ⭐ 별점 설정 함수
+  const handleStarClick = (newRating) => {
+    setRating(newRating);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,7 +83,8 @@ const ReviewEdit = () => {
         title, 
         content, 
         productName, 
-        prdId: prdId 
+        prdId, 
+        rating // ⭐ 별점 추가
       };
       await updateReview(id, updatedReview);
 
@@ -116,19 +124,18 @@ const ReviewEdit = () => {
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </Form.Group>
+
               <Form.Group className="mb-3">
                 <Form.Label>제품 검색</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="제품 이름을 검색하세요"
-                  value={productName}
+                  value={productInput}
                   onChange={(e) => {
                     const value = e.target.value;
                     setProductInput(value);
                     setProductName(value);
-                    if (value.trim() === "") {
-                      return; // 비어 있으면 productName 변경 안 함
-                    }
+                    if (value.trim() === "") return;
                     findProducts(value);
                   }}
                 />
@@ -150,12 +157,29 @@ const ReviewEdit = () => {
                 )}
               </Form.Group>
 
+              {/* ⭐ 별점 선택 */}
+              <Form.Group className="mb-3">
+                <Form.Label>별점</Form.Label>
+                <div className="d-flex align-items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <BsStarFill
+                      key={star}
+                      className={`fs-3 ${star <= rating ? "text-warning" : "text-secondary"}`}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleStarClick(star)}
+                    />
+                  ))}
+                  <span className="fw-bold ms-2">({rating})</span>
+                </div>
+              </Form.Group>
+
               <Form.Group className="mb-3">
                 <Form.Label>리뷰 내용</Form.Label>
                 <div style={{ border: "none", borderRadius: "5px", padding: "5px", minHeight: "300px" }}>
                   <ReactQuill theme="snow" value={content} modules={modules} onChange={setContent} style={{ height: "250px" }} />
                 </div>
               </Form.Group>
+              
               <div className="d-flex justify-content-end">
                 <Button variant="secondary" className="me-2" onClick={() => navigate(`/reviews/${id}`)}>
                   취소
