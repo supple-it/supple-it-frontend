@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback,memo } from "react";
 import "./ProductDetail.css";
-import Header from "../../components/include/Header";
 import Footer from "../../components/include/Footer";
+import Header from "../../components/include/Header";
+import ReactMarkdown from 'react-markdown'; 
 
 
 const removeHtmlTags = (str) => {
@@ -9,9 +10,6 @@ const removeHtmlTags = (str) => {
   return str.replace(/<[^>]*>/g, "");
 };
 
-// Header와 Footer를 메모이제이션
-const MemoizedHeader = memo(Header);
-const MemoizedFooter = memo(Footer);
 
 const ProductDetail = () => {
   const [showDetail, setShowDetail] = useState(false);
@@ -20,10 +18,10 @@ const ProductDetail = () => {
   const [productDescription, setProductDescription] = useState('');
 
   useEffect(() => {
-    // localStorage에서 데이터 가져오기
-    const keyword = localStorage.getItem('selectedKeyword');
-    const products = localStorage.getItem('recommendedProducts');
-    const description = localStorage.getItem('productDescription');
+    // sessionStorage에서 데이터 가져오기
+    const keyword = sessionStorage.getItem('selectedKeyword');
+    const products = sessionStorage.getItem('recommendedProducts');
+    const description = sessionStorage.getItem('productDescription');
     
     if (keyword) {
       setSelectedKeyword(keyword);
@@ -55,7 +53,7 @@ const ProductDetail = () => {
 
   return (
     <div className="font-NotoSans bg-gray-50">
-      <MemoizedHeader />
+      <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col min-h-screen">
         {/* 타이틀 섹션 */}
         <div className="text-center mb-12">
@@ -117,7 +115,7 @@ const ProductDetail = () => {
           )}
         </section>
       </main>
-      <MemoizedFooter />
+      <Footer />
     </div>
   );
 };
@@ -135,8 +133,8 @@ const DetailContent = React.memo(({ showDetail, productDescription }) => {
         backgroundColor: showDetail ? "white" : "transparent",
       }}
     >
-      <div className="p-6">
-        {productDescription || '상세 설명이 없습니다.'}
+      <div className="text-description">
+        <ReactMarkdown>{productDescription}</ReactMarkdown>       
       </div>
     </div>
   );

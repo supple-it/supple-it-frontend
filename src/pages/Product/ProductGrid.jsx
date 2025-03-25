@@ -1,36 +1,39 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getRecommendations } from '../../services/api';
+import productDetails from './productDetails';
 
 const ProductGrid = () => {
   const navigate = useNavigate();
   const [activeSet, setActiveSet] = useState(() => {
-    const savedSet = localStorage.getItem('activeSet');
+    const savedSet = sessionStorage.getItem('activeSet');
     return savedSet ? JSON.parse(savedSet) : 0;
   });
   
-  const productset1 = [
-    { icon: 'capsules', title: '비타민', description: '면역력 강화와 뼈 건강에 도움' },
-    { icon: 'heart', title: '단백질', description: '심장 건강과 혈행 개선' },
-    { icon: 'brain', title: '칼슘', description: '눈 건강과 시력 보호' },
-    { icon: 'bone', title: '아연', description: '뼈와 관절 건강 관리' },
-    { icon: 'bed', title: '프로바이오틱스', description: '숙면과 스트레스 관리' },
-    { icon: 'shield-virus', title: '시스테인', description: '장 건강과 면역력 증진' },
-    { icon: 'running', title: '엽산', description: '활동성 증진과 관절 보호' },
-    { icon: 'apple-alt', title: '셀렌', description: '체중 관리와 대사 촉진' },
-    { icon: 'sun', title: '나이아신', description: '노화 방지와 피부 건강' },
-  ];
-  const productset2 = [
-    { icon: 'capsules', title: '피로회복', description: '면역력 강화와 뼈 건강에 도움' },
-    { icon: 'heart', title: '골다공증', description: '심장 건강과 혈행 개선' },
-    { icon: 'brain', title: '피부', description: '눈 건강과 시력 보호' },
-    { icon: 'bone', title: '체지방', description: '뼈와 관절 건강 관리' },
-    { icon: 'bed', title: '혈행', description: '숙면과 스트레스 관리' },
-    { icon: 'shield-virus', title: '근육', description: '장 건강과 면역력 증진' },
-    { icon: 'running', title: '신경', description: '활동성 증진과 관절 보호' },
-    { icon: 'apple-alt', title: '콜레스테롤', description: '체중 관리와 대사 촉진' },
-    { icon: 'sun', title: '관절', description: '노화 방지와 피부 건강' },
-  ];
+const productset1 = [
+  { icon: 'pills', title: '비타민', description: '신체 기능 유지와 항산화 작용' },
+  { icon: 'dumbbell', title: '단백질', description: '근육 형성과 회복에 도움' },
+  { icon: 'bone', title: '칼슘', description: '뼈 건강과 골다공증 예방' },
+  { icon: 'shield-alt', title: '아연', description: '면역력 강화와 상처 회복 촉진' },
+  { icon: 'bacteria', title: '프로바이오틱스', description: '장 건강과 소화 개선' },
+  { icon: 'medkit', title: '시스테인', description: '간 해독과 항산화 작용' },
+  { icon: 'seedling', title: '엽산', description: '세포 생성과 혈액 건강 유지' },
+  { icon: 'shield-virus', title: '셀렌', description: '항산화 작용과 면역력 강화' },
+  { icon: 'heartbeat', title: '나이아신', description: '혈액순환과 피부 건강 개선' },
+];
+
+const productset2 = [
+  { icon: 'bolt', title: '피로회복', description: '에너지 생성과 피로 개선' },
+  { icon: 'bone', title: '골다공증', description: '뼈 건강과 칼슘 흡수 촉진' },
+  { icon: 'tint', title: '피부', description: '보습 유지와 탄력 증진' },
+  { icon: 'weight', title: '체지방', description: '지방 대사와 체중 조절' },
+  { icon: 'heartbeat', title: '혈행', description: '혈액순환 개선과 혈압 조절' },
+  { icon: 'dumbbell', title: '근육', description: '근육 형성과 회복 지원' },
+  { icon: 'brain', title: '신경', description: '신경 안정과 스트레스 완화' },
+  { icon: 'chart-line', title: '콜레스테롤', description: '콜레스테롤 수치 조절' },
+  { icon: 'walking', title: '관절', description: '관절 건강과 염증 완화' },
+];
+
   // 현재 활성화된 세트의 products 배열
   const products = activeSet === 0 ? productset1 : productset2;
   
@@ -38,40 +41,19 @@ const ProductGrid = () => {
   const toggleProductSet = () => {
     const newSet = activeSet === 0 ? 1 : 0;
     setActiveSet(newSet);
-    localStorage.setItem('activeSet', JSON.stringify(newSet)); // 탭 상태 저장
+    sessionStorage.setItem('activeSet', JSON.stringify(newSet)); // 탭 상태 저장
   };
-
-  const productDetails = {
-  "비타민": "비타민에 대한 상세 설명입니다.",
-  "단백질": "단백질에 대한 상세 설명입니다.",
-  "칼슘": "칼슘에 대한 상세 설명입니다.",
-  "아연": "아연에 대한 상세 설명입니다.",
-  "프로바이오틱스": "프로바이오틱스에 대한 상세 설명입니다.",
-  "시스테인": "시스테인에 대한 상세 설명입니다.",
-  "엽산": "엽산에 대한 상세 설명입니다.",
-  "셀렌": "셀렌에 대한 상세 설명입니다.",
-  "나이아신": "나이아신에 대한 상세 설명입니다.",
-  "피로회복": "피로에 대한 상세 설명입니다.",
-  "골다공증": "골다공증에 대한 상세 설명입니다.",
-  "피부": "피부에 대한 상세 설명입니다.",
-  "체지방": "체지방에 대한 상세 설명입니다.",
-  "혈행": "혈행에 대한 상세 설명입니다.",
-  "근육": "근육에 대한 상세 설명입니다.",
-  "신경": "신경에 대한 상세 설명입니다.",
-  "콜레스테롤": "콜레스테롤에 대한 상세 설명입니다.",
-  "관절": "관절에 대한 상세 설명입니다."
-};
 
   const handleCategoryClick = async (keyword) => {
     try {
       // 1. 키워드 저장
-      localStorage.setItem('selectedKeyword', keyword);
+      sessionStorage.setItem('selectedKeyword', keyword);
       // 2.상세 설명 저장
-      localStorage.setItem('productDescription', productDetails[keyword] || '');      
+      sessionStorage.setItem('productDescription', productDetails[keyword] || '');      
       // 3. API 호출
       const response = await getRecommendations(keyword);      
       // 4. 결과 저장
-      localStorage.setItem('recommendedProducts', JSON.stringify(response.data));      
+      sessionStorage.setItem('recommendedProducts', JSON.stringify(response.data));      
       // 5. 페이지 이동
       navigate('/productdetail');
     } catch (error) {
@@ -89,7 +71,7 @@ const ProductGrid = () => {
                 ? 'border-b-2 border-teal-500 font-medium text-teal-500'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
-           onClick={() => { setActiveSet(0); localStorage.setItem('activeSet', JSON.stringify(0)); }}
+           onClick={() => { setActiveSet(0); sessionStorage.setItem('activeSet', JSON.stringify(0)); }}
           >
             영양소
           </button>
@@ -99,7 +81,7 @@ const ProductGrid = () => {
                 ? 'border-b-2 border-teal-500 font-medium text-teal-500'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
-            onClick={() => { setActiveSet(1); localStorage.setItem('activeSet', JSON.stringify(1)); }}
+            onClick={() => { setActiveSet(1); sessionStorage.setItem('activeSet', JSON.stringify(1)); }}
           >
             건강기능
           </button>
