@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// src/pages/Auth/Signup.jsx
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col, ButtonGroup, ToggleButton, Modal } from "react-bootstrap";
 import "./Signup.css";
@@ -19,13 +20,48 @@ const Signup = () => {
     adminCode: "",
   });
 
+  // 관리자 코드 상태 관리
+  const [adminCode, setAdminCode] = useState("");
+
+  // 비밀번호 표시 상태
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // 환경변수에서 관리자 코드 가져오기
+  useEffect(() => {
+    // .env 파일에서 관리자 코드 가져오기
+    setAdminCode(process.env.REACT_APP_ADMIN_SECRET_CODE || "admin1234");
+  }, []);
+
   // 유효성 검사 결과 저장 상태 추가
   const [validation, setValidation] = useState({
     emailChecked: false,
     emailAvailable: false,
     nicknameChecked: false,
     nicknameAvailable: false,
+    passwordMatch: false,
+    passwordChecked: false
   });
+
+  const [birthdateError, setBirthdateError] = useState("");
+  // 현재 날짜 계산 (생년월일 최대값으로 사용)
+  const today = new Date().toISOString().split('T')[0];
+
+  // 생년월일 변경 핸들러 추가
+  const handleBirthdateChange = (e) => {
+    const selectedDate = e.target.value;
+    
+    if (selectedDate > today) {
+      setBirthdateError("생년월일은 현재 날짜 이후로 설정할 수 없습니다.");
+      return;
+    }
+    
+    setBirthdateError("");
+    setFormData({
+      ...formData,
+      birthDate: selectedDate
+    });
+  };
 
   // 이메일 변경 시 유효성 검사 결과 초기화
   const handleEmailChange = (e) => {
@@ -51,6 +87,51 @@ const Signup = () => {
       nicknameChecked: false,
       nicknameAvailable: false
     });
+  };
+
+  // 비밀번호 변경 시 일치 여부 확인
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setFormData({
+      ...formData,
+      password: newPassword
+    });
+
+    // 비밀번호 유효성 검사
+    const isValid = validatePassword(newPassword);
+    
+    // 비밀번호 일치 여부 확인
+    const passwordsMatch = newPassword === formData.confirmPassword && newPassword !== '';
+    
+    setValidation({
+      ...validation,
+      passwordChecked: isValid,
+      passwordMatch: passwordsMatch
+    });
+  };
+
+  // 비밀번호 확인 변경 시 일치 여부 확인
+  const handleConfirmPasswordChange = (e) => {
+    const confirmPassword = e.target.value;
+    setFormData({
+      ...formData,
+      confirmPassword: confirmPassword
+    });
+
+    // 비밀번호 일치 여부 확인
+    const passwordsMatch = formData.password === confirmPassword && confirmPassword !== '';
+    
+    setValidation({
+      ...validation,
+      passwordMatch: passwordsMatch
+    });
+  };
+
+  // 비밀번호 유효성 검사 함수
+  const validatePassword = (password) => {
+    // 비밀번호는 8자 이상, 숫자와 특수문자를 포함해야 함
+    const regex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+    return regex.test(password);
   };
 
   // 일반 필드 변경 핸들러
@@ -188,10 +269,8 @@ const Signup = () => {
     
     // 관리자 옵션 선택 시 코드 검증
     if (formData.adminOption) {
-      // 실제 프로젝트에서는 환경 변수나 설정파일에서 관리
-      const validAdminCode = "admin1234"; // 임시 코드
-            
-      if (formData.adminCode !== validAdminCode) {
+      // .env 파일에서 가져온 관리자 코드와 비교
+      if (formData.adminCode !== adminCode) {
         alert("관리자 코드가 올바르지 않습니다.");
         return;
       }
@@ -266,31 +345,62 @@ const Signup = () => {
                   )}
                 </Form.Group>
 
+                {/* 비밀번호 입력 필드 (보기/숨기기 아이콘 추가) */}
                 <Form.Group className="mb-3">
                   <Form.Label className="signup-form-label">비밀번호</Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    className="signup-form-control"
-                  />
-                  <Form.Text className="text-muted">
-                    비밀번호는 8자 이상, 숫자와 특수문자를 포함해야 합니다.
+                  <div className="position-relative">
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={formData.password}
+                      onChange={handlePasswordChange}
+                      required
+                      className="signup-form-control"
+                    />
+                    <button
+                      type="button"
+                      className="btn position-absolute end-0 top-0 h-100 d-flex align-items-center border-0 bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                      style={{ background: 'none', border: 'none' }}
+                    >
+                      <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                    </button>
+                  </div>
+                  <Form.Text className={validation.passwordChecked ? "text-success" : "text-muted"}>
+                    {validation.passwordChecked 
+                      ? "✅ 비밀번호가 유효합니다." 
+                      : "비밀번호는 8자 이상, 숫자와 특수문자를 포함해야 합니다."}
                   </Form.Text>
                 </Form.Group>
 
+                {/* 비밀번호 확인 필드 (보기/숨기기 아이콘 추가) */}
                 <Form.Group className="mb-3">
                   <Form.Label className="signup-form-label">비밀번호 확인</Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    required
-                    className="signup-form-control"
-                  />
+                  <div className="position-relative">
+                    <Form.Control
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleConfirmPasswordChange}
+                      required
+                      className="signup-form-control"
+                    />
+                    <button
+                      type="button"
+                      className="btn position-absolute end-0 top-0 h-100 d-flex align-items-center border-0 bg-transparent"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      style={{ background: 'none', border: 'none' }}
+                    >
+                      <i className={`fas ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                    </button>
+                  </div>
+                  {formData.confirmPassword && (
+                    <Form.Text className={validation.passwordMatch ? "text-success" : "text-danger"}>
+                      {validation.passwordMatch 
+                        ? "✅ 비밀번호가 일치합니다." 
+                        : "❌ 비밀번호가 일치하지 않습니다."}
+                    </Form.Text>
+                  )}
                 </Form.Group>
 
                 {/* 닉네임 입력 필드 (중복 검사 버튼 수정) */}
@@ -324,16 +434,26 @@ const Signup = () => {
                   )}
                 </Form.Group>
 
+                {/* 생년월일 필드 (현재 날짜 제한 추가) */}
                 <Form.Group className="mb-3">
                   <Form.Label className="signup-form-label">생년월일</Form.Label>
                   <Form.Control
                     type="date"
                     name="birthDate"
                     value={formData.birthDate}
-                    onChange={handleChange}
+                    onChange={handleBirthdateChange}
+                    max={today}
+                    className={`signup-form-control ${birthdateError ? "is-invalid" : ""}`}
                     required
-                    className="signup-form-control"
                   />
+                  {birthdateError && (
+                    <div className="invalid-feedback">
+                      {birthdateError}
+                    </div>
+                  )}
+                  <Form.Text className="text-muted">
+                    생년월일은 현재 날짜 이전만 선택 가능합니다.
+                  </Form.Text>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -375,15 +495,25 @@ const Signup = () => {
                 {formData.adminOption && (
                   <Form.Group className="mb-3">
                     <Form.Label className="signup-form-label">관리자 코드</Form.Label>
-                    <Form.Control
-                      type="password"
-                      name="adminCode"
-                      value={formData.adminCode}
-                      onChange={handleChange}
-                      required={formData.adminOption}
-                      className="signup-form-control"
-                      placeholder="관리자 코드를 입력하세요"
-                    />
+                    <div className="position-relative">
+                      <Form.Control
+                        type={showPassword ? "text" : "password"}
+                        name="adminCode"
+                        value={formData.adminCode}
+                        onChange={handleChange}
+                        required={formData.adminOption}
+                        className="signup-form-control"
+                        placeholder="관리자 코드를 입력하세요"
+                      />
+                      <button
+                        type="button"
+                        className="btn position-absolute end-0 top-0 h-100 d-flex align-items-center border-0 bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={{ background: 'none', border: 'none' }}
+                      >
+                        <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                      </button>
+                    </div>
                     <Form.Text className="text-muted">
                       관리자 계정으로 가입하려면 관리자 코드가 필요합니다.
                     </Form.Text>
@@ -436,7 +566,12 @@ const Signup = () => {
                   variant="primary" 
                   type="submit" 
                   className="signup-btn-primary"
-                  disabled={!validation.emailAvailable || !validation.nicknameAvailable}
+                  disabled={
+                    !validation.emailAvailable || 
+                    !validation.nicknameAvailable || 
+                    !validation.passwordMatch || 
+                    !validation.passwordChecked
+                  }
                 >
                   회원가입
                 </Button>

@@ -1,11 +1,9 @@
-// App.jsx의 import 부분을 확인
+// src/App.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import { useState } from "react";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
-import MyPage from "./pages/Home/MyPage";
 import ProductList from "./pages/Product/ProductList";
 import ProductDetail from "./pages/Product/ProductDetail";
 import ReviewForm from "./pages/Review/ReviewForm";
@@ -22,7 +20,9 @@ import GoogleCallback from "./pages/Auth/GoogleCallback";
 import NaverCallback from "./pages/Auth/NaverCallback";
 import UpdateProfile from "./pages/Auth/UpdateProfile";
 import FindPassword from "./pages/Auth/FindPassword";
-import ChangePassword from "./pages/Auth/ChangePassword";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+import SearchResults from "./pages/Search/SearchResults";
 
 function App() {
   // 공지사항 상태 관리
@@ -36,23 +36,18 @@ function App() {
   return (
     <Router> 
       <Routes>
+        {/* 공개 라우트 - 인증 불필요 */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/find-password" element={<FindPassword />} /> {/* 비밀번호 찾기 경로 추가 */}
-        <Route path="/change-password" element={<ChangePassword />} /> {/* 비밀번호 변경 경로 */}
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/profile" element={<UpdateProfile />} />
+        <Route path="/find-password" element={<FindPassword />} />
         <Route path="/products" element={<ProductList />} />
         <Route path="/productdetail" element={<ProductDetail />} />
-        <Route path="/review" element={<ReviewForm />} />
-        <Route path="/favorites" element={<FavoriteList />} />
-        
-        {/* 공지사항 라우트 - 수정된 경로 */}
         <Route path="/notices" element={<NoticeBoard />} />
         <Route path="/notices/:id" element={<NoticeBoardDetail />} />
-        <Route path="/notices/edit/:id" element={<NoticeBoardEdit />} />
-        <Route path="/newnotice" element={<NoticeBoardInsert onSubmit={handleAddNotice} />} />
+        <Route path="/callback/google" element={<GoogleCallback />} />
+        <Route path="/callback/naver" element={<NaverCallback />} />
+        <Route path="/search" element={<SearchResults />} />
 
         {/* 📛 리뷰 라우트 */}
         <Route path="/reviews" element={<ReviewBoard />} />
@@ -60,9 +55,32 @@ function App() {
         <Route path="/reviews/:id" element={<ReviewDetail />} />
         <Route path="/reviews/edit/:id" element={<ReviewEdit />} />
         
-        <Route path="/schedule" element={<Schedule />} />
-        <Route path="/callback/google" element={<GoogleCallback />} />
-        <Route path="/callback/naver" element={<NaverCallback />} />
+        {/* 보호된 라우트 - 로그인 필요 */}
+        <Route path="/schedule" element={
+          <ProtectedRoute>
+            <Schedule />
+          </ProtectedRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <UpdateProfile />
+          </ProtectedRoute>
+        } />
+        <Route path="/favorites" element={
+          <ProtectedRoute>
+            <FavoriteList />
+          </ProtectedRoute>
+        } />
+        <Route path="/notices/edit/:id" element={
+          <ProtectedRoute>
+            <NoticeBoardEdit />
+          </ProtectedRoute>
+        } />
+        <Route path="/newnotice" element={
+          <ProtectedRoute>
+            <NoticeBoardInsert onSubmit={handleAddNotice} />
+          </ProtectedRoute>
+        } />
       </Routes>
     </Router>
   );
