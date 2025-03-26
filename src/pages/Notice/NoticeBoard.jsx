@@ -5,6 +5,7 @@ import { getNotices } from '../../services/api';
 import axios from 'axios'; // axios 직접 임포트
 import "./NoticeBoard.css";
 import Header from "../../components/include/Header";
+import Footer from "../../components/include/Footer";
 
 const NoticeBoard = () => {
   const navigate = useNavigate();
@@ -251,6 +252,7 @@ const NoticeBoard = () => {
           </Card.Body>
         </Card>
       </div>
+      <Footer />
     </>
   );
 };
