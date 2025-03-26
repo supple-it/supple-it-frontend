@@ -17,31 +17,32 @@ const NoticeBoardDetail = () => {
 
   useEffect(() => {
     // NoticeBoardDetail.jsx - fetchNotice 함수 수정
-    const fetchNotice = async () => {
-      try {
-        setLoading(true);
-        console.log("상세 조회 요청 ID:", id);
-        
-        const response = await getNoticeById(id);
-        
-        console.log("공지사항 상세 데이터:", response.data);
-        
-        // 응답 데이터 유효성 검사
-        if (!response.data) {
-          throw new Error("응답에 데이터가 없습니다");
-        }
-        
-        // 원본 데이터 저장
-        setNotice(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("공지사항 조회 중 오류:", error);
-        // 더 자세한 오류 메시지 표시
-        setError(`공지사항을 불러오는 중 오류가 발생했습니다: ${error.message}`);
-        setLoading(false);
-      }
-    };
+  const fetchNotice = async () => {
+    try {
+    setLoading(true);
+    console.log("상세 조회 요청 ID:", id);
+    const response = await getNoticeById(id);
 
+    // 응답 상태와 데이터를 체크
+    console.log("응답의 상태 코드:", response?.status);
+    console.log("응답의 데이터:", response?.data);
+
+    if (!response || !response.status || !response.data) {
+      throw new Error("응답에 상태 코드나 데이터가 없습니다.");
+    }
+
+    if (response.status !== 200) {
+      throw new Error(`서버 오류: ${response.status}`);
+    }
+
+    setNotice(response.data);
+    setLoading(false);
+  } catch (error) {
+    console.error("공지사항 조회 중 오류:", error);
+    setError(`공지사항을 불러오는 중 오류가 발생했습니다: ${error.message}`);
+    setLoading(false);
+  }
+};
     const checkUserRole = () => {
       const userRole = localStorage.getItem("role");
       console.log("상세 페이지에서 확인한 사용자 역할:", userRole);

@@ -2,7 +2,6 @@ import React from 'react';
 
 const Footer = () => {
  console.log("Footer Loaded!");
-
   return (
     <footer className="bg-white mt-auto">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -17,7 +16,7 @@ const Footer = () => {
             <ul className="space-y-2">
               {['자주 묻는 질문', '1:1 문의', '공지사항'].map((item, idx) => (
                 <li key={idx}>
-                  <a href="#" className="text-black hover:text-teal-500">{item}</a>
+                  <a href={item === '자주 묻는 질문' ? "/#" : item === '1:1 문의' ? "/#" : "/notices"} className="text-black hover:text-teal-500">{item}</a>
                 </li>
               ))}
             </ul>
@@ -38,7 +37,7 @@ const Footer = () => {
               {[
                 { icon: 'fa-phone', text: '02–1234–5678' },
                 { icon: 'fa-envelope', text: 'support@suppleit.com' },
-                { icon: 'fa-map-marker-alt', text: '서울특별시 강남구 테헤란로 123' },
+                { icon: 'fa-map-marker-alt', text: '서울시 금천구 가산디지털2로 101' },
               ].map((contact, idx) => (
                 <li key={idx} className="text-black">
                   <i className={`fas ${contact.icon} mr-2`}></i> {contact.text}
