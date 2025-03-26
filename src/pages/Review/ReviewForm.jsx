@@ -4,7 +4,7 @@ import { Container, Form, Button, Card } from "react-bootstrap";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import Header from "../../components/include/Header";
-import { createReview, searchProducts } from "../../services/api";
+import { createReview, searchProductsFromDB } from "../../services/api";
 import { FaStar } from "react-icons/fa"; // 별 아이콘 추가
 
 const ReviewForm = () => {
@@ -28,8 +28,9 @@ const ReviewForm = () => {
       return;
     }
     try {
-      const res = await searchProducts(keyword);
-      setSearchResults(res.data || []);
+      // searchProducts 대신 searchProductsFromDB 사용
+      const res = await searchProductsFromDB(keyword);
+      setSearchResults(res.data?.data || []);
     } catch (error) {
       console.error("제품 검색 오류:", error);
       setSearchResults([]);
