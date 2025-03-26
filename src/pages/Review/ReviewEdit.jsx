@@ -5,7 +5,7 @@ import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { BsStarFill } from "react-icons/bs"; // ⭐ 아이콘 추가
 import Header from "../../components/include/Header";
-import { getReviewById, updateReview, searchProducts } from "../../services/api";
+import { getReviewById, updateReview, searchProductsFromDB } from "../../services/api";
 
 const ReviewEdit = () => {
   const navigate = useNavigate();
@@ -47,8 +47,9 @@ const ReviewEdit = () => {
       return;
     }
     try {
-      const res = await searchProducts(query);
-      setSearchResults(res.data);
+      // searchProducts 대신 searchProductsFromDB 사용
+      const res = await searchProductsFromDB(query);
+      setSearchResults(res.data?.data || []);
     } catch (error) {
       console.error("제품 검색 오류:", error);
     }

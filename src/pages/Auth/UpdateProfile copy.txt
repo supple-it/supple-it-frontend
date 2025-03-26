@@ -7,7 +7,6 @@ import { getMemberInfo, updateMemberInfo, checkNickname, deleteMember, changePas
 import "../Auth/Signup.css";
 import Header from "../../components/include/Header";
 import Footer from "../../components/include/Footer";
-import Swal from "sweetalert2";
 
 const UpdateProfile = () => {
   const navigate = useNavigate();
@@ -165,12 +164,7 @@ const UpdateProfile = () => {
   // 닉네임 중복 검사
   const handleNicknameCheck = async () => {
     if (isSocialAccount) {
-      Swal.fire({
-        title: '수정 제한',
-        text: "소셜 계정은 닉네임을 변경할 수 없습니다.",
-        icon: 'warning',
-        confirmButtonColor: '#2A9D8F'
-      });
+      alert("소셜 계정은 닉네임을 변경할 수 없습니다.");
       return;
     }
     
@@ -211,32 +205,17 @@ const UpdateProfile = () => {
           checked: true,
           available: true
         });
-        Swal.fire({
-          title: '사용 가능',
-          text: '사용 가능한 닉네임입니다.',
-          icon: 'success',
-          confirmButtonColor: '#2A9D8F'
-        });
+        alert("사용 가능한 닉네임입니다.");
       } else {
         setNicknameValidation({
           checked: true,
           available: false
         });
-        Swal.fire({
-          title: '사용 불가',
-          text: '이미 사용 중인 닉네임입니다.',
-          icon: 'error',
-          confirmButtonColor: '#2A9D8F'
-        });
+        alert("이미 사용 중인 닉네임입니다.");
       }
     } catch (error) {
       console.error("닉네임 중복 확인 오류:", error);
-      Swal.fire({
-        title: '확인 오류',
-        text: '닉네임 중복 확인 중 오류가 발생했습니다.',
-        icon: 'error',
-        confirmButtonColor: '#2A9D8F'
-      });
+      alert("닉네임 중복 확인 중 오류가 발생했습니다.");
     }
   };
   // 생년월일 유효성 검사 상태 추가
@@ -366,19 +345,11 @@ const UpdateProfile = () => {
         gender: formData.gender === "남자" ? "MALE" : "FEMALE",
         birth: formData.birthDate
       };
-    
+
       // 회원 정보 업데이트 API 호출
       const response = await updateMemberInfo(updateData);
       
       console.log("회원정보 수정 응답:", response.data);
-      
-      // SweetAlert2로 성공 메시지 표시
-      Swal.fire({
-        title: '수정 완료!',
-        text: '회원 정보가 성공적으로 수정되었습니다.',
-        icon: 'success',
-        confirmButtonColor: '#2A9D8F'
-      });
       
       setSuccess("회원 정보가 성공적으로 수정되었습니다.");
       
@@ -403,19 +374,11 @@ const UpdateProfile = () => {
       console.error("회원 정보 수정 오류:", error);
       setError("회원 정보 수정 중 오류가 발생했습니다: " + 
             (error.response?.data?.message || error.message));
-      
-      // 오류 메시지 SweetAlert로 표시
-      Swal.fire({
-        title: '수정 실패',
-        text: '회원 정보 수정 중 오류가 발생했습니다: ' + 
-              (error.response?.data?.message || error.message),
-        icon: 'error',
-        confirmButtonColor: '#2A9D8F'
-      });
     } finally {
       setIsSubmitting(false);
     }
   };
+
   if (loading) {
     return (
       <>
@@ -465,8 +428,8 @@ const UpdateProfile = () => {
             
             <Form onSubmit={handleSubmit}>
               {/* 회원 정보 섹션 */}
-              <div className="mb-4 p-4 border rounded bg-light">
-                <h4 className="mb-3 text-teal-700">기본 정보</h4>
+              <div className="mb-4 p-3 border rounded bg-light">
+                <h4 className="mb-3">기본 정보</h4>
                 
                 {/* 이메일 필드 - 소셜/로컬 계정 모두 수정 불가 */}
                 <Form.Group className="mb-3">
@@ -670,18 +633,12 @@ const UpdateProfile = () => {
               )}
               
               {/* 버튼 그룹 */}
-              <div className="d-flex justify-content-between mt-5">
+              <div className="d-flex justify-content-between">
                 <Button 
                   variant="primary" 
                   type="submit" 
-                  style={{ 
-                    width: "45%", 
-                    backgroundColor: '#2A9D8F', 
-                    border: 'none', 
-                    padding: '10px 0',
-                    fontSize: '16px',
-                    fontWeight: 'bold' 
-                  }}
+                  className="btn-primary"
+                  style={{ width: "45%" }}
                   disabled={isSocialAccount || isSubmitting || (formData.nickname !== originalNickname && (!nicknameValidation.checked || !nicknameValidation.available))}
                 >
                   {isSubmitting ? "저장 중..." : "정보 수정"}
@@ -690,14 +647,7 @@ const UpdateProfile = () => {
                 <Button 
                   variant="danger" 
                   onClick={handleDeleteAccount}
-                  style={{ 
-                    width: "45%", 
-                    backgroundColor: '#e63946', 
-                    border: 'none',
-                    padding: '10px 0',
-                    fontSize: '16px',
-                    fontWeight: 'bold'
-                  }}
+                  style={{ width: "45%" }}
                   disabled={isSubmitting}
                 >
                   회원 탈퇴

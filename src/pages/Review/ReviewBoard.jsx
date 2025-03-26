@@ -4,6 +4,7 @@ import { Button, Card, Form, Table, Pagination } from "react-bootstrap";
 import { getReviews } from '../../services/api';
 import "./ReviewBoard.css"
 import Header from "../../components/include/Header";
+import Footer from "../../components/include/Footer";
 
 const ReviewBoard = () => {
   const navigate = useNavigate();
@@ -204,6 +205,7 @@ const ReviewBoard = () => {
           </Card.Body>
         </Card>
       </div>
+      <Footer />
     </>
   );
 };
